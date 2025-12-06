@@ -66,4 +66,4 @@ Mock authentication logic
 Error handling for invalid login
 
 Redirect to dashboard on success 
-link:https://vercel.com/velmurugans-projects-e7562622?projectDeleted=netflix-login-project
+link:https://netflix-login-project-kure.vercel.app/
