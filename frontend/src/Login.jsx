@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Login() {
@@ -7,11 +6,8 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
 
     if (!email || !password) {
       setError("Please fill all fields.");
@@ -19,17 +15,21 @@ export default function Login() {
     }
 
     try {
-      const res = await axios.post("https://netflix-login-project.onrender.com/", {
-        email,
-        password
-      });
+      const response = await axios.post(
+        "https://netflix-login-project.onrender.com/login",
+        {
+          email,
+          password,
+        }
+      );
 
-      // ✅ Backend success → directly navigate
-      if (res.status === 200) {
-        navigate("/dashboard");
+      if (response.data.success) {
+        window.location.href = "/dashboard";
+      } else {
+        setError("Invalid email or password.");
       }
     } catch (err) {
-      setError("Invalid email or password.");
+      setError("Server error. Try again.");
     }
   };
 
@@ -71,4 +71,3 @@ export default function Login() {
     </div>
   );
 }
-
