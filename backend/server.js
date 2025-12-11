@@ -1,16 +1,19 @@
-import express from "express";
-import cors from "cors";
+const express = require("express");
+const cors = require("cors");
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
-// Dummy user for login
+// MOCK USER
 const USER = {
-  email: "velmurugan2003@gmail.com",
-  password: "12345",
+  email: "test@gmail.com",
+  password: "12345"
 };
+
+app.get("/", (req, res) => {
+  res.send("Backend is running successfully!!");
+});
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
@@ -19,14 +22,8 @@ app.post("/login", (req, res) => {
     return res.json({ success: true });
   }
 
-  return res.json({ success: false, message: "Invalid email or password" });
-});
-
-app.get("/", (req, res) => {
-  res.send("Backend is running successfully!");
+  res.json({ success: false });
 });
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
