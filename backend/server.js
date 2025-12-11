@@ -1,24 +1,27 @@
-const express = require("express");
-const cors = require("cors");
+import express from "express";
+import cors from "cors";
 
 const app = express();
-app.use(cors());
-app.use(express.json()); // IMPORTANT: Parses JSON body
 
-// MOCK USER (for login testing)
+app.use(cors({
+  origin: "*",      // allow ALL domains
+  methods: "GET,POST",
+}));
+
+app.use(express.json());
+
+// TEST USER
 const USER = {
   email: "test@gmail.com",
   password: "12345",
 };
 
-// Root route
 app.get("/", (req, res) => {
   res.send("Backend is running successfully!!");
 });
 
-// LOGIN route
 app.post("/login", (req, res) => {
-  console.log("Request Body:", req.body); // DEBUG — see what frontend sends
+  console.log("Received:", req.body);
 
   const { email, password } = req.body;
 
@@ -29,8 +32,5 @@ app.post("/login", (req, res) => {
   res.json({ success: false });
 });
 
-// Port for Render
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log("SERVER running on PORT", PORT));

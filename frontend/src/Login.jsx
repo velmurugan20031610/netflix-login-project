@@ -7,9 +7,6 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // ALWAYS call backend through this URL
-  const API = "https://netflix-login-project.onrender.com";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -23,22 +20,24 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        `${API}/login`,
+        "https://netflix-login-project.onrender.com/login",
         { email, password },
-        { timeout: 20000 } // render may take time to wake up
+        {
+          headers: { "Content-Type": "application/json" },
+          timeout: 20000, // Give Render time to wake up
+        }
       );
 
       setLoading(false);
 
       if (response.data.success) {
-        alert("Login Successful!");
         window.location.href = "/dashboard";
       } else {
-        setError("Invalid email or password");
+        setError("Invalid email or password.");
       }
     } catch (err) {
       setLoading(false);
-      setError("Server is waking up… Try again in 3 seconds.");
+      setError("Server waking up... try again.");
     }
   };
 
@@ -46,7 +45,7 @@ export default function Login() {
     <div className="bg-black h-screen flex justify-center items-center">
       <form
         onSubmit={handleSubmit}
-        className="bg-[#111] text-white p-10 w-96 rounded-lg shadow-lg"
+        className="bg-[#111] text-white p-10 w-96 rounded-lg"
       >
         <h1 className="text-3xl font-bold mb-6 text-center">Sign In</h1>
 
@@ -59,21 +58,21 @@ export default function Login() {
         <input
           type="email"
           placeholder="Email"
-          className="w-full p-3 mb-3 rounded bg-gray-800 focus:outline-none"
+          className="w-full p-3 mb-3 rounded bg-gray-800"
           onChange={(e) => setEmail(e.target.value)}
         />
 
         <input
           type="password"
           placeholder="Password"
-          className="w-full p-3 mb-3 rounded bg-gray-800 focus:outline-none"
+          className="w-full p-3 mb-3 rounded bg-gray-800"
           onChange={(e) => setPassword(e.target.value)}
         />
 
         <button
           type="submit"
-          className="w-full bg-red-600 p-3 rounded mt-3 hover:bg-red-700 transition"
           disabled={loading}
+          className="w-full bg-red-600 p-3 rounded mt-3 hover:bg-red-700"
         >
           {loading ? "Processing..." : "Sign In"}
         </button>
