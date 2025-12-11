@@ -22,7 +22,10 @@ export default function Login() {
       const response = await axios.post(
         "https://netflix-login-project.onrender.com/login",
         { email, password },
-        { timeout: 15000 } // Render wakes up slow, so 15 sec timeout
+        {
+          headers: { "Content-Type": "application/json" },
+          timeout: 15000,
+        }
       );
 
       setLoading(false);
@@ -34,8 +37,6 @@ export default function Login() {
       }
     } catch (err) {
       setLoading(false);
-
-      // If Render server is sleeping
       setError("Server is waking up... Try again in 3 seconds.");
     }
   };
