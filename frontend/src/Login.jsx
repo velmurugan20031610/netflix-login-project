@@ -7,6 +7,9 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // ALWAYS call backend through this URL
+  const API = "https://netflix-login-project.onrender.com";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -20,24 +23,22 @@ export default function Login() {
 
     try {
       const response = await axios.post(
-        "https://netflix-login-project.onrender.com/login",
+        `${API}/login`,
         { email, password },
-        {
-          headers: { "Content-Type": "application/json" },
-          timeout: 15000,
-        }
+        { timeout: 20000 } // render may take time to wake up
       );
 
       setLoading(false);
 
-      if (response?.data?.success) {
+      if (response.data.success) {
+        alert("Login Successful!");
         window.location.href = "/dashboard";
       } else {
-        setError("Invalid email or password.");
+        setError("Invalid email or password");
       }
     } catch (err) {
       setLoading(false);
-      setError("Server is waking up... Try again in 3 seconds.");
+      setError("Server is waking up… Try again in 3 seconds.");
     }
   };
 
