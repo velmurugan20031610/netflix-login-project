@@ -19,7 +19,7 @@ export default function Login() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/login", {
+      const res = await axios.post("https://netflix-login-project.onrender.com/", {
         email,
         password
       });
